@@ -1,4 +1,4 @@
-FROM odroid/arm64v8-artful-minimal
+FROM odroid/arm64v8-jessie-minimal
 
 MAINTAINER "Dongjin Kim <tobetter@gmail.com>"
 

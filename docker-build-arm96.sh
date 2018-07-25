@@ -17,7 +17,7 @@ function docker_minimal {
 			;;
 	esac
 	case "${DIST}" in
-		stretch | buster | sid)
+		jessie | stretch | buster | sid)
 			DISTRIBUTION=debian
 			;;
 		xenial | artful | bionic)
@@ -95,6 +95,7 @@ RUN apt-get install -y --no-install-recommends \\
 	devscripts \\
 	dh-di \\
 	dh-exec \\
+	dh-python \\
 	docbook-xml \\
 	docbook-xsl \\
 	dosfstools \\
@@ -103,35 +104,21 @@ RUN apt-get install -y --no-install-recommends \\
 	flex \\
 	genext2fs \\
 	genisoimage \\
+	git \\
 	graphviz \\
 	isolinux \\
 	kernel-wedge \\
 	kmod \\
-	libaudit-dev \\
-	libbabeltrace-dev \\
-	libbogl-dev \\
 	libdistro-info-perl \\
-	libdw-dev \\
-	libelf-dev \\
-	libglib2.0-dev \\
-	libiberty-dev \\
-	libnewt-dev \\
 	libnewt-pic \\
-	libpci-dev \\
-	libperl-dev \\
 	librsvg2-bin \\
 	libslang2-pic \\
-	libssl-dev:native \\
-	libudev-dev \\
-	libunwind8-dev \\
-	libwrap0-dev \\
 	lintian \\
 	lsb-release \\
 	mklibs \\
 	mklibs-copy \\
 	mtools \\
 	pxelinux \\
-	python-dev \\
 	python-sphinx \\
 	python-sphinx-rtd-theme \\
 	quilt \\
@@ -152,7 +139,7 @@ __EOF
 }
 
 ARCH_TYPES="arm32v7 arm64v8"
-DISTRIBUTIONS="stretch buster sid xenial bionic artful"
+DISTRIBUTIONS="jessie stretch buster sid xenial bionic artful"
 
 for arch in ${ARCH_TYPES}; do
 	for d in ${DISTRIBUTIONS}; do
@@ -166,12 +153,29 @@ for arch in ${ARCH_TYPES}; do
 	done
 done
 
+taglist=""
+
 for arch in ${ARCH_TYPES}; do
 	for d in ${DISTRIBUTIONS}; do
 		destdir=${PWD}/${arch}/${d}/minimal
-		docker build -t odroid/${arch}-${d}-minimal:latest ${destdir}
+		tagname="odroid/${arch}-${d}-minimal:latest"
+		taglist="${taglist} ${tagname}"
+		docker build -t ${tagname} ${destdir}
 
 		destdir=${PWD}/${arch}/${d}/debian
-		docker build -t odroid/${arch}-${d}-debian:latest ${destdir}
+		tagname="odroid/${arch}-${d}-debuild:latest"
+		taglist="${taglist} ${tagname}"
+		docker build -t ${tagname} ${destdir}
 	done
 done
+
+
+cat>docker_push.sh<<__EOF
+!/bin/sh
+
+taglist="${taglist}"
+
+for i in \${taglist}; do
+	docker push \${i}:latest
+done
+__EOF

@@ -19,6 +19,7 @@ RUN apt-get install -y --no-install-recommends \
 	devscripts \
 	dh-di \
 	dh-exec \
+	dh-python \
 	docbook-xml \
 	docbook-xsl \
 	dosfstools \
@@ -27,35 +28,21 @@ RUN apt-get install -y --no-install-recommends \
 	flex \
 	genext2fs \
 	genisoimage \
+	git \
 	graphviz \
 	isolinux \
 	kernel-wedge \
 	kmod \
-	libaudit-dev \
-	libbabeltrace-dev \
-	libbogl-dev \
 	libdistro-info-perl \
-	libdw-dev \
-	libelf-dev \
-	libglib2.0-dev \
-	libiberty-dev \
-	libnewt-dev \
 	libnewt-pic \
-	libpci-dev \
-	libperl-dev \
 	librsvg2-bin \
 	libslang2-pic \
-	libssl-dev:native \
-	libudev-dev \
-	libunwind8-dev \
-	libwrap0-dev \
 	lintian \
 	lsb-release \
 	mklibs \
 	mklibs-copy \
 	mtools \
 	pxelinux \
-	python-dev \
 	python-sphinx \
 	python-sphinx-rtd-theme \
 	quilt \
